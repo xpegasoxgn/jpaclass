@@ -1,8 +1,11 @@
 package com.clasejava.demo_jpa.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.clasejava.demo_jpa.dto.PedidoDTO;
 import com.clasejava.demo_jpa.entity.Cliente;
 import com.clasejava.demo_jpa.entity.Pedido;
 import com.clasejava.demo_jpa.entity.Producto;
@@ -21,6 +24,19 @@ public class PedidoService {
     @Autowired
     private  ProductoRepository productoRepository;
     
+    public List<PedidoDTO> listarPedidos() {
+        
+        List <Pedido> pedidos = pedidoRepository.findAll();
+        return pedidos.stream().map(p -> {
+            Double total = p.getProducto().getPrecio() * p.getCantidad();
+            Integer cantidad = p.getCantidad();
+            Double precioUnitario = p.getProducto().getPrecio();
+
+            return new PedidoDTO(p.getId(), p.getCliente().getNombre(), p.getProducto().getNombre(), cantidad, total);
+
+            
+            }).toList();
+    }
 
     public Pedido crearPedido(Long clienteId, Long productoId, int cantidad) {
 
