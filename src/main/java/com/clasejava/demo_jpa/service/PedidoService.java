@@ -89,5 +89,10 @@ public class PedidoService {
             .map(e -> new ProductoVentaDTO(e.getKey(), e.getValue().doubleValue()))
             .toList();
     }
+
+    public Pedido buscarPedido(Long id) {
+        return pedidoRepository.findById(id).orElseThrow(() -> new RuntimeException("pedido no encontrado"));
+        
+    }
     
 }
