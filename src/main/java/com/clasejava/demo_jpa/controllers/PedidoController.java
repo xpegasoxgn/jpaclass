@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clasejava.demo_jpa.dto.PedidoDTO;
+import com.clasejava.demo_jpa.dto.ProductoVentaDTO;
+import com.clasejava.demo_jpa.dto.VentaClienteDTO;
 import com.clasejava.demo_jpa.entity.Pedido;
 import com.clasejava.demo_jpa.service.PedidoService;
 
@@ -32,5 +34,14 @@ public class PedidoController {
         return pedidoService.listarPedidos();
     }
     
+    @GetMapping("/reportes/productos-por-cliente")
+    public List<VentaClienteDTO> productoPorCliente() {
+        return pedidoService.ventasPorCliente();
+    }
+    
+     @GetMapping("/reportes/productos-mas-vendidos")
+    public List<ProductoVentaDTO> productoMasVendido() {
+        return pedidoService.productoMasVendido();
+    }
     
 }

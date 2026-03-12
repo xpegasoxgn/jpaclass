@@ -1,11 +1,15 @@
 package com.clasejava.demo_jpa.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.clasejava.demo_jpa.dto.PedidoDTO;
+import com.clasejava.demo_jpa.dto.ProductoVentaDTO;
+import com.clasejava.demo_jpa.dto.VentaClienteDTO;
 import com.clasejava.demo_jpa.entity.Cliente;
 import com.clasejava.demo_jpa.entity.Pedido;
 import com.clasejava.demo_jpa.entity.Producto;
@@ -56,6 +60,34 @@ public class PedidoService {
         pedido.setProducto(producto);
         pedido.setCantidad(cantidad);
         return pedidoRepository.save(pedido);
+    }
+
+    public List<VentaClienteDTO> ventasPorCliente() {
+        //|Obtener todos los pedidos
+        List<Pedido> pedidos = pedidoRepository.findAll();
+        //Agrupar por cliente y sumar el total de ventas
+        Map<String, Double> ventas = pedidos.stream().collect(Collectors.groupingBy(
+            p -> p.getCliente().getNombre(),
+            Collectors.summingDouble(p -> p.getProducto().getPrecio() * p.getCantidad())
+        ));
+        //Convertir el mapa a una lista de DTOs
+        return ventas.entrySet().stream()
+            .map(e -> new VentaClienteDTO(e.getKey(), e.getValue()))
+            .toList();
+    }
+
+    public List<ProductoVentaDTO> productoMasVendido() {
+        //Obtener todos los pedidos
+        List<Pedido> pedidos = pedidoRepository.findAll();
+        //Agrupar por producto y sumar la cantidad vendida
+        Map<String, Integer> ventas = pedidos.stream().collect(Collectors.groupingBy(
+            p -> p.getProducto().getNombre(),
+            Collectors.summingInt(p -> p.getCantidad())
+        ));
+
+        return ventas.entrySet().stream()
+            .map(e -> new ProductoVentaDTO(e.getKey(), e.getValue().doubleValue()))
+            .toList();
     }
     
 }
