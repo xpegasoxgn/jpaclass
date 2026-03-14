@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.clasejava.demo_jpa.entity.Producto;
 import com.clasejava.demo_jpa.service.ProductoService;
 
+import jakarta.validation.Valid;
+
 
 
 
@@ -33,7 +35,7 @@ public class ProductoController {
     }
 
     @PostMapping
-    public Producto postMethodName(@RequestBody Producto entity) {
+    public Producto postMethodName(@Valid @RequestBody Producto entity) {
         
         
         return productoService.crearProducto(entity);
