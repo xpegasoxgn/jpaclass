@@ -2,6 +2,8 @@ package com.clasejava.demo_jpa.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.clasejava.demo_jpa.entity.Producto;
@@ -17,6 +19,10 @@ public class ProductoService{
 
     public List <Producto> listarProductos(){
         return productoRepository.findAll();
+    }
+    
+    public Page <Producto> listarProductos(Pageable pageable){
+        return productoRepository.findAll(pageable);
     }
     public Producto crearProducto(Producto producto) {
         return productoRepository.save(producto);
