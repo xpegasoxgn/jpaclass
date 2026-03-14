@@ -14,6 +14,7 @@ import com.clasejava.demo_jpa.dto.PedidoDTO;
 import com.clasejava.demo_jpa.dto.ProductoVentaDTO;
 import com.clasejava.demo_jpa.dto.VentaClienteDTO;
 import com.clasejava.demo_jpa.entity.Pedido;
+import com.clasejava.demo_jpa.entity.Producto;
 import com.clasejava.demo_jpa.service.PedidoService;
 import com.clasejava.demo_jpa.utils.JsonResult;
 
@@ -53,7 +54,15 @@ public class PedidoController {
         List<PedidoDTO> pedidos = pedidoService.listarPedidos();
         return new JsonResult(true, "Pedidos listados correctamente", pedidos);
     }
+
     
+    @GetMapping("/busca/{id}")
+    public JsonResult buscarPedido2(@PathVariable Long id) {
+        
+        Producto producto = pedidoService.buscaProducto(id);
+        
+        return new JsonResult(true, "Producto encontrado", producto);
+    }
     @GetMapping("/{id}")
     public JsonResult buscarPedido(@PathVariable Long id) {
         
